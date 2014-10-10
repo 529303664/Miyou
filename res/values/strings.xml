@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">秘友</string>
+    <string name="fogetpassword">忘记密码？</string>
+    <string name="title_activity_main">秘友</string>
+    <string name="action_all_mibo">全部</string>
+    <string name="action_hot_mibo">热门</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">设置</string>
+
+    <string-array name="spinner_list_array">
+        <item>全部</item>
+        <item>热门</item>
+        <item>秘圈</item>
+    </string-array>
+
+    <string name="action_menu_create_tiezi">发帖</string>
+    <string name="action_menu_message">消息</string>
+    <string name="action_menu_refresh">刷新</string>
+    <string name="action_menu_search">搜索</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_create_tiezi">发帖</string>
+    <string name="takephoto">拍照</string>
+    <string name="gallary">相册</string>
+    <string name="ResourceModel">素材模板</string>
+
+</resources>

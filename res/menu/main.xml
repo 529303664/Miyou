@@ -1,0 +1,58 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.luluandroid.miyou.MainActivity" >
+
+    <item 
+        android:id="@+id/actions_menu_kuozhan"
+        android:title="扩展"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_kuozhan"
+        app:showAsAction="ifRoom"
+        >
+        <menu >
+            <item 
+        android:id="@+id/actions_menu_create_tiezi"
+        android:title="@string/action_menu_create_tiezi"
+        android:orderInCategory="21"
+        app:showAsAction="always"
+        android:icon="@drawable/create_tiezi"
+        style="@style/actionbar_icons"
+        />
+             <item 
+        android:id="@+id/actions_menu_message"
+        android:title="@string/action_menu_message"
+        app:showAsAction="always|withText"
+        android:orderInCategory="22"
+        android:icon="@drawable/ic_message"
+         style="@style/actionbar_icons"
+        />
+    
+    <item 
+        android:id="@+id/actions_menu_search"
+        android:title="@string/action_menu_search"
+        android:orderInCategory="23"
+        app:showAsAction="always|withText"
+        android:icon="@drawable/ic_search"
+         android:actionViewClass="android.Widget.SearchView"
+        />
+            
+        </menu>
+        
+    </item>
+    <item 
+        android:id="@+id/actions_menu_refresh"
+        android:title="@string/action_menu_refresh"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_refresh"
+        style="@style/actionbar_icons"
+        />
+    
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+
+</menu>

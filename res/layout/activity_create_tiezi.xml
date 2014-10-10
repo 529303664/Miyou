@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    
+        <EditText
+        android:id="@+id/create_tiezi_input_editext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:background="@drawable/ic_message" />
+    
+    <include 
+        layout="@layout/craete_tiezi_controlbar"
+        android:focusable="true"
+        />
+    
+    <FrameLayout 
+    android:id="@+id/create_tiezi_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1.0"
+    tools:context="miyou.createtiezi.CreateTieziActivity"
+    tools:ignore="MergeRootFrame"
+    android:visibility="gone"
+     />
+</LinearLayout>
+
+

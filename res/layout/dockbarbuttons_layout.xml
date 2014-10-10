@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    
+<RadioGroup 
+        android:id="@+id/dockbuttons_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/bluelogin"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+        
+        <RadioButton 
+            android:id="@+id/dockbarbuttons_mibo"
+            android:text="@string/dockbuttons_mibo"
+            style="@style/dockbarbuttons" 
+            android:checked="true"
+            android:drawableTop="@drawable/dockbarbutton_selector"
+            />
+        <RadioButton 
+            android:id="@+id/dockbarbuttons_chat"
+            android:text="@string/dockbuttons_chat"
+            style="@style/dockbarbuttons" 
+            android:drawableTop="@drawable/dockbarbutton_selector"
+            />
+        
+        <RadioButton 
+            android:id="@+id/dockbarbuttons_contact"
+            android:text="@string/dockbuttons_contact"
+            style="@style/dockbarbuttons" 
+            android:drawableTop="@drawable/dockbarbutton_selector"
+            />
+        <RadioButton 
+            android:id="@+id/dockbarbuttons_i"
+            android:text="@string/dockbuttons_i"
+            style="@style/dockbarbuttons" 
+            android:drawableTop="@drawable/dockbarbutton_selector"
+            />
+    </RadioGroup>
+</FrameLayout>

@@ -1,0 +1,64 @@
+package application.control;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import cn.bmob.v3.Bmob;
+import database.DatabaseHelper;
+import android.app.Activity;
+import android.app.Application;
+import android.util.Log;
+
+public class ManagerApplication extends Application {
+
+	private DatabaseHelper databaseHelper;
+	private List<Activity>myActivityList = new LinkedList<Activity>();
+	private static ManagerApplication instance;
+	
+	public synchronized static ManagerApplication getInstance() {
+		if(null == instance){
+			instance = new ManagerApplication();
+		}
+		return instance;
+	}
+	
+	public void addActivity(Activity activity){
+		myActivityList.add(activity);
+	}
+	
+	public void killAllActivity()
+	{
+		try {
+			for(Activity activity : myActivityList)
+			{
+				if(activity!=null)
+					activity.finish();
+			}
+		}catch(Exception e){
+			Log.e("killAllActivity", e.toString());
+		}
+	}
+	/* (non-Javadoc)
+	 * @see android.app.Application#onCreate()
+	 */
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		Bmob.initialize(this, Conf.BMOB_APP_ID);
+		/*this.databaseHelper = new DatabaseHelper(this.getApplicationContext(), "miyou.db", null, 1);
+		*/
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Application#onLowMemory()
+	 */
+	@Override
+	public void onLowMemory() {
+		// TODO Auto-generated method stub
+		super.onLowMemory();
+		System.gc();
+	}
+
+	
+}

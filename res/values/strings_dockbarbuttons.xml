@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dockbuttons_mibo">秘博</string>
+    <string name="dockbuttons_chat">秘话</string>
+    <string name="dockbuttons_contact">秘友</string>
+    <string name="dockbuttons_i">我</string>
+    
+</resources>
