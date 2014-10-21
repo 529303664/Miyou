@@ -59,14 +59,14 @@ public class CreateTieziActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if(!NvIsOpen){
+					navigationLfBt.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_action_collapse));
 					navigationFrameLayout.startAnimation(navigationEtAnimation);
 					navigationFrameLayout.setVisibility(View.VISIBLE);
 					NvIsOpen = true;
-					navigationLfBt.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_hictbarltbt));
 				}else{
+					navigationLfBt.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_action_expand));
 					navigationFrameLayout.startAnimation(navigationExAnimation);
 					navigationFrameLayout.setVisibility(View.GONE);
-					navigationLfBt.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_shctbarltbt));
 					NvIsOpen = false;
 				}
 			}

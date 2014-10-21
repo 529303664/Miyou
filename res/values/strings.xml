@@ -24,5 +24,6 @@
     <string name="takephoto">拍照</string>
     <string name="gallary">相册</string>
     <string name="ResourceModel">素材模板</string>
+    <string name="title_activity_show_image">图片浏览</string>
 
 </resources>

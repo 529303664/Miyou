@@ -13,16 +13,28 @@
         android:gravity="center"
         android:background="@drawable/ic_message" />
     
+        <View 
+            android:layout_marginTop="10dp" 
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="?android:attr/listDivider"
+            />
     <include 
         layout="@layout/craete_tiezi_controlbar"
         android:focusable="true"
         />
-    
+    <View
+        android:layout_marginTop="10dp" 
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:background="?android:attr/listDivider"
+            />
     <FrameLayout 
     android:id="@+id/create_tiezi_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_weight="1.0"
+    
     tools:context="miyou.createtiezi.CreateTieziActivity"
     tools:ignore="MergeRootFrame"
     android:visibility="gone"

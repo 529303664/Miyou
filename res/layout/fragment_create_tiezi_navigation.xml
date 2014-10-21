@@ -8,7 +8,7 @@
         android:id="@+id/create_tiezi_takephoto"
         style="@style/dockbarcreatetiezinavigation"
         android:layout_alignParentLeft="true"
-        android:drawableTop="@drawable/ic_takephoto"
+        android:drawableTop="@drawable/ic_action_camera"
         android:gravity="center"
         android:paddingLeft="10.0dip"
         android:text="@string/takephoto" />
@@ -17,7 +17,7 @@
         android:id="@+id/create_tiezi_gallary"
         style="@style/dockbarcreatetiezinavigation"
         android:layout_toRightOf="@id/create_tiezi_takephoto"
-        android:drawableTop="@drawable/ic_gallary"
+        android:drawableTop="@drawable/ic_action_picture"
         android:gravity="center"
         android:paddingLeft="20dp"
         android:text="@string/gallary" />
@@ -26,7 +26,7 @@
         android:id="@+id/create_tiezi_model"
         style="@style/dockbarcreatetiezinavigation"
         android:layout_toRightOf="@id/create_tiezi_gallary"
-        android:drawableTop="@drawable/ic_resourcemodel"
+        android:drawableTop="@drawable/ic_action_collection"
         android:gravity="center"
         android:paddingLeft="20dp"
         android:text="@string/ResourceModel" />

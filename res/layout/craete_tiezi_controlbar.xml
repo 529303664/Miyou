@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/create_tiezi_controlbar_left_button"
-        android:src="@drawable/ic_hictbarltbt"
+        android:background="@drawable/ic_action_expand"
         android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_action_overflow"
         android:clickable="true"
          />
 
