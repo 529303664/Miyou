@@ -120,8 +120,6 @@ public class CreateTieziActivity extends ActionBarActivity {
 	
 	public void InitActionBar(){
 		actionbar = getSupportActionBar();
-		actionbar.setHomeButtonEnabled(true);
-		actionbar.setDisplayShowHomeEnabled(true);
 		actionbar.setDisplayHomeAsUpEnabled(true);		
 		
 	}
