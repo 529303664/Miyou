@@ -11,7 +11,9 @@
         android:drawableTop="@drawable/ic_action_camera"
         android:gravity="center"
         android:paddingLeft="10.0dip"
-        android:text="@string/takephoto" />
+        android:text="@string/takephoto"
+        android:onClick="true"
+         />
 
     <TextView
         android:id="@+id/create_tiezi_gallary"
@@ -20,7 +22,9 @@
         android:drawableTop="@drawable/ic_action_picture"
         android:gravity="center"
         android:paddingLeft="20dp"
-        android:text="@string/gallary" />
+        android:text="@string/gallary"
+        android:onClick="true"
+         />
     
     <TextView
         android:id="@+id/create_tiezi_model"
@@ -29,6 +33,8 @@
         android:drawableTop="@drawable/ic_action_collection"
         android:gravity="center"
         android:paddingLeft="20dp"
-        android:text="@string/ResourceModel" />
+        android:text="@string/ResourceModel" 
+        android:onClick="true"
+        />
 
 </RelativeLayout>

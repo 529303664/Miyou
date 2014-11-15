@@ -2,28 +2,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="?attr/actionBarSize"
-    >
-<!-- android:paddingTop="?attr/actionBarSize" 
-让处于actionbar启用叠加模式的情况下，保持下面的布局始终位于actionbar下部 -->
+    android:paddingTop="?attr/actionBarSize" >
 
-    <EditText
-        android:id="@+id/create_tiezi_input_editext"
+    <!--
+android:paddingTop="?attr/actionBarSize" 
+让处于actionbar启用叠加模式的情况下，保持下面的布局始终位于actionbar下部
+    -->
+
+    <FrameLayout
+        android:id="@+id/create_tiezi_framelayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
-        android:background="@drawable/ic_message"
-        android:gravity="center" 
-        />
+        android:layout_height="wrap_content"
+         >
+
+        <ImageView 
+            android:id="@+id/create_tiezi_imageview1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_message"
+            android:scaleType="fitStart"
+            />
+        
+        <EditText
+            android:id="@+id/create_tiezi_input_editext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+             />
+
+        <ProgressBar
+            android:id="@+id/create_tiezi_progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+        
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/create_tiezi_linearlayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_weight="1.0"
         android:background="@color/white"
-        android:orientation="vertical" 
-        android:layout_weight="1.0" >
+        android:orientation="vertical" >
 
         <include
             layout="@layout/craete_tiezi_controlbar"

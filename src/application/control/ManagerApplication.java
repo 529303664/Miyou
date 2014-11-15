@@ -17,7 +17,6 @@ public class ManagerApplication extends Application {
 	private DatabaseHelper databaseHelper;
 	private List<Activity>myActivityList = new LinkedList<Activity>();
 	private static ManagerApplication instance;
-	
 	public synchronized static ManagerApplication getInstance() {
 		if(null == instance){
 			instance = new ManagerApplication();
@@ -70,6 +69,5 @@ public class ManagerApplication extends Application {
 		super.onLowMemory();
 		System.gc();
 	}
-
 	
 }

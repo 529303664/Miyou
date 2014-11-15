@@ -8,6 +8,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
@@ -24,6 +27,9 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
+import android.provider.MediaStore.Images.Thumbnails;
 
 /**
  * Tools for handler picture
@@ -488,5 +494,60 @@ public final class ImageTools {
         bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opts);  
         return bitmap;  
     }
-
+    
+    /**
+     * 获取图片缩略图
+     * @param imagePath
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Bitmap getImageThumbnail(String imagePath,int width,int height){
+    	Bitmap bitmap = null;
+    	BitmapFactory.Options options = new BitmapFactory.Options();
+    	options.inJustDecodeBounds = true;
+    	//获取图片的宽和高
+    	bitmap = BitmapFactory.decodeFile(imagePath, options);
+    	options.inJustDecodeBounds = false;
+    	//计算缩放比
+    	int h = options.outHeight;
+    	int w = options.outWidth;
+    	int beWidth = w / width;
+    	int beHeight = h /height;
+    	int be = 1;
+    	if(beWidth < beHeight){
+    		be = beWidth;
+    	}else{
+    		be = beHeight;
+    	}
+    	if(be <= 0){
+    		be = 1;
+    	}
+    	options.inSampleSize = be;
+    	//重新读入图片，读取缩放后的bitmap
+    	bitmap = BitmapFactory.decodeFile(imagePath, options);
+    	//利用ThumbnailUtils来创建缩略图，这里要制定要缩放哪个Bitmap对象
+    	bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+    	return bitmap;
+    }
+    
+    /**Video的缩略图
+     * @param videoPath
+     * @param width
+     * @param height
+     * @param kind
+     * @return
+     */
+    private Bitmap getVideoThumbnail(String videoPath, int width, int height,
+    		int kind) {
+    		Bitmap bitmap = null;
+    		// 获取视频的缩略图
+    		bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
+    		System.out.println("w"+bitmap.getWidth());
+    		System.out.println("h"+bitmap.getHeight());
+    		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
+    		ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+    		return bitmap;
+    		}
+    
 }
