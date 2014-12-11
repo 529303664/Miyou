@@ -19,17 +19,22 @@ android:paddingTop="?attr/actionBarSize"
             android:id="@+id/create_tiezi_imageview1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_message"
+            android:background="@drawable/model_table_texture"
             android:scaleType="fitStart"
             />
         
-        <EditText
+        <com.rockerhieu.emojicon.EmojiconEditText
             android:id="@+id/create_tiezi_input_editext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="center"
-             />
+            android:hint="@string/create_tiezi_hint"
+            />
+        
+        <!-- <EditText
+            
+             /> -->
 
         <ProgressBar
             android:id="@+id/create_tiezi_progressBar1"
@@ -42,12 +47,19 @@ android:paddingTop="?attr/actionBarSize"
         
     </FrameLayout>
 
+    <fragment 
+        android:id="@+id/emojicons"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        class="com.rockerhieu.emojicon.EmojiconsFragment"
+        android:layout_above="@+id/create_tiezi_linearlayout"
+        />
+    
     <LinearLayout
         android:id="@+id/create_tiezi_linearlayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_weight="1.0"
         android:background="@color/white"
         android:orientation="vertical" >
 

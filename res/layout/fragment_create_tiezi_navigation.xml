@@ -19,7 +19,7 @@
         android:id="@+id/create_tiezi_gallary"
         style="@style/dockbarcreatetiezinavigation"
         android:layout_toRightOf="@id/create_tiezi_takephoto"
-        android:drawableTop="@drawable/ic_action_picture"
+        android:drawableTop="@drawable/ic_action_new_picture"
         android:gravity="center"
         android:paddingLeft="20dp"
         android:text="@string/gallary"
@@ -36,5 +36,14 @@
         android:text="@string/ResourceModel" 
         android:onClick="true"
         />
-
+    <TextView 
+        android:id="@+id/create_tiezi_ps"
+        style="@style/dockbarcreatetiezinavigation"
+        android:layout_toRightOf="@id/create_tiezi_model"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:text="@string/adjust_effect" 
+        android:onClick="true"
+        android:drawableTop="@drawable/ic_action_computer"
+        />
 </RelativeLayout>

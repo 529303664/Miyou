@@ -7,9 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import miyou.MainActivity;
+import miyou.adapters.TextWatcherAdapter;
 import miyou.extra.ShowToast;
 import miyou.fragment.FragmentCreatetieziNavigation;
 import statics.ChannelCodes;
+import utilclass.FileManager;
 import utilclass.ImageManager;
 import utilclass.ImageTools;
 
@@ -42,18 +44,27 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import application.control.Conf;
 import application.control.ManagerApplication;
 
-public class CreateTieziActivity extends ActionBarActivity {
+import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.EmojiconsFragment;
+import com.rockerhieu.emojicon.emoji.Emojicon;
+public class CreateTieziActivity extends ActionBarActivity
+implements EmojiconGridFragment.OnEmojiconClickedListener,
+EmojiconsFragment.OnEmojiconBackspaceClickedListener
+{
 
 	private ActionBar actionbar;
-	private Fragment currentFragment;
+	private Fragment currentFragment,emotionFragment;
 	private ProgressBar progressBar;
 	private loadPictureAsynctask myLoadTask;
 	private FrameLayout navigationFrameLayout;
 	private ImageView navigationLfBt, navigationRtBt, imageBackgroud;
-	private boolean NvIsOpen;
+	private EditText myMessageEditext;
+	private TextView emotionText;
+	private boolean NvIsOpen,IsAsynctaskOk;//分别是判断导航是否开启和处理图片的Asynctask是否正在运行
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +80,25 @@ public class CreateTieziActivity extends ActionBarActivity {
 		ManagerApplication.getInstance().addActivity(this);
 	}
 
+	/**
+	 * 
+	 */
 	private void initComponent() {
 		navigationLfBt = (ImageView) findViewById(R.id.create_tiezi_controlbar_left_button);
 		navigationRtBt = (ImageView) findViewById(R.id.create_tiezi_controlbar_right_button);
 		navigationFrameLayout = (FrameLayout) findViewById(R.id.create_tiezi_container);
 		progressBar = (ProgressBar) findViewById(R.id.create_tiezi_progressBar1);
 		imageBackgroud = (ImageView) findViewById(R.id.create_tiezi_imageview1);
+		myMessageEditext = (EditText) findViewById(R.id.create_tiezi_input_editext);
+		emotionText = (TextView)findViewById(R.id.create_tiezi_emotions);
+		
+		//引用表情的fragment
+		emotionFragment = (Fragment)this.getSupportFragmentManager().findFragmentById(R.id.emojicons);
+		
+		//先关闭表情的fragment
+		getSupportFragmentManager().beginTransaction().hide(emotionFragment).commit();
 		NvIsOpen = false;
+		IsAsynctaskOk = true;
 		final Animation navigationEtAnimation = AnimationUtils.loadAnimation(
 				this, R.anim.create_tiezi_navigation_enter);
 		final Animation navigationExAnimation = AnimationUtils.loadAnimation(
@@ -100,6 +123,42 @@ public class CreateTieziActivity extends ActionBarActivity {
 				}
 			}
 		});
+		navigationRtBt.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				NvIsOpen = false;
+
+			}
+		});
+		
+		emotionText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				if(emotionFragment.isHidden()){
+					getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.left_in, R.anim.right_out).show(emotionFragment).commit();
+				}else{
+					getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.left_in, R.anim.right_out).hide(emotionFragment).commit();
+				}
+			}
+		});
+		
+		/*监听Editext内容改变时
+		myMessageEdixt.addTextChangedListener(new TextWatcherAdapter(){
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// 可以在这获取内容
+				
+				super.onTextChanged(s, start, before, count);
+			}
+			
+		});*/
 	}
 
 	/*
@@ -129,16 +188,17 @@ public class CreateTieziActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.home:
-			/*
-			 * Intent intent = new Intent(this,MainActivity.class);
-			 * intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			 * startActivity(intent);
-			 */
+			if(myLoadTask!=null){
+				myLoadTask.onCancelled();
+			}
 			finish();
 		case R.id.action_create_tiezi_write:
 			// 数据发送
-			setResult(ChannelCodes.CREATE_TIEZI_SUCCESS);
-			finish();
+			if(IsAsynctaskOk){
+				SaveLocal();//进行已发送帖子的本地保存
+				setResult(ChannelCodes.CREATE_TIEZI_SUCCESS);
+				finish();
+			}
 		default:
 			break;
 		}
@@ -211,7 +271,7 @@ public class CreateTieziActivity extends ActionBarActivity {
 			}
 			// 按手机屏幕分辨率的一半形式裁剪图片
 			ImageManager.cropImage(CreateTieziActivity.this, uri,
-					ImageManager.getPhoneWidth(this) / 2,
+					ImageManager.getPhoneWidth(this),
 					ImageManager.getPhoneHeight(this) / 2, Conf.CROP_PICTURE);
 			break;
 		case Conf.CROP_PICTURE:
@@ -268,7 +328,9 @@ public class CreateTieziActivity extends ActionBarActivity {
 			progressBar.setVisibility(View.GONE);
 			if (pictureImage != null) {
 				pictureImage.recycle();
+				pictureImage = null;
 			}
+			IsAsynctaskOk = true;
 			super.onCancelled();
 		}
 
@@ -281,8 +343,11 @@ public class CreateTieziActivity extends ActionBarActivity {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			IsAsynctaskOk =true;
 			if ("success".equals(result)) {
-				imageBackgroud.setImageBitmap(pictureImage);
+				imageBackgroud.setBackgroundDrawable(ImageTools
+						.bitmapToDrawable(pictureImage));
+				/* imageBackgroud.setImageBitmap(pictureImage); */
 				Log.i("userImageFilePath", "执行到了照片这一步");
 				Log.i("userImageFilePath", fileSavePath);
 				// 下面开始上传图片
@@ -301,6 +366,7 @@ public class CreateTieziActivity extends ActionBarActivity {
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+			IsAsynctaskOk = false;
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
 			progressBar.setIndeterminate(true);
@@ -356,9 +422,51 @@ public class CreateTieziActivity extends ActionBarActivity {
 				e.printStackTrace();
 				return "failure";
 			}
-
 		}
-
 	}
 
+	/* 
+	 * 表情删除调用
+	 * 	 */
+	@Override
+	public void onEmojiconBackspaceClicked(View v) {
+		// TODO Auto-generated method stub
+		EmojiconsFragment.backspace(myMessageEditext);
+	}
+
+	/* 
+	 * 表情点击调用
+	 * 	 */
+	@Override
+	public void onEmojiconClicked(Emojicon emojicon) {
+		// TODO Auto-generated method stub
+		EmojiconsFragment.input(myMessageEditext, emojicon);
+	}
+
+	/**
+	 * 进行已发送的帖子本地保存
+	 */
+	private void SaveLocal() {
+		// TODO Auto-generated method stub
+		SaveLocalImage();
+		SaveLocalDataBase();
+	}
+
+	/**
+	 * 保存帖子到数据库
+	 */
+	private void SaveLocalDataBase() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * 保存帖子照片到本地
+	 */
+	private void SaveLocalImage() {
+		// TODO Auto-generated method stub
+		Bitmap tempBitmap = ImageTools.drawableToBitmap(imageBackgroud.getBackground());
+		ImageTools.savePhotoToAppPrivateSD(tempBitmap, FileManager.getInstance().getAlbumStorageDir(this, Conf.SD_Album_Dir_Name), String.valueOf(System.currentTimeMillis()), ".jpg");
+	}
+	
 }

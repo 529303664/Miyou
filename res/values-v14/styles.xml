@@ -8,8 +8,8 @@
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <!-- API 14 theme customizations can go here. -->
         <!-- 启用ActionBar叠加模式，使得actionbar隐藏/显示时其他部件无需重新绘制 -->
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="windowActionBarOverlay">true</item>
+        <!-- <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item> -->
     </style>
 
 </resources>

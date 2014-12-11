@@ -58,7 +58,6 @@ public final class ImageTools {
 		return bitmap;
 	}
 
-	
 	/**
 	 * Bitmap to drawable
 	 * 
@@ -141,20 +140,20 @@ public final class ImageTools {
 	}
 
 	/**
-	 * Base64 to byte[]
-//	 */
-//	public static byte[] base64ToBytes(String base64) throws IOException {
-//		byte[] bytes = Base64.decode(base64);
-//		return bytes;
-//	}
-//
-//	/**
-//	 * Byte[] to base64
-//	 */
-//	public static String bytesTobase64(byte[] bytes) {
-//		String base64 = Base64.encode(bytes);
-//		return base64;
-//	}
+	 * Base64 to byte[] //
+	 */
+	// public static byte[] base64ToBytes(String base64) throws IOException {
+	// byte[] bytes = Base64.decode(base64);
+	// return bytes;
+	// }
+	//
+	// /**
+	// * Byte[] to base64
+	// */
+	// public static String bytesTobase64(byte[] bytes) {
+	// String base64 = Base64.encode(bytes);
+	// return base64;
+	// }
 
 	/**
 	 * Create reflection images
@@ -245,6 +244,7 @@ public final class ImageTools {
 
 	/**
 	 * Resize the drawable
+	 * 
 	 * @param drawable
 	 * @param w
 	 * @param h
@@ -262,39 +262,45 @@ public final class ImageTools {
 				matrix, true);
 		return new BitmapDrawable(newbmp);
 	}
-	
+
 	/**
 	 * Get images from SD card by path and the name of image
+	 * 
 	 * @param photoName
 	 * @return
 	 */
-	public static Bitmap getPhotoFromSDCard(String path,String photoName,String suffix){
-		Bitmap photoBitmap = BitmapFactory.decodeFile(path + "/" +photoName +suffix);
+	public static Bitmap getPhotoFromSDCard(String path, String photoName,
+			String suffix) {
+		Bitmap photoBitmap = BitmapFactory.decodeFile(path + "/" + photoName
+				+ suffix);
 		if (photoBitmap == null) {
 			return null;
-		}else {
+		} else {
 			return photoBitmap;
 		}
 	}
-	
+
 	/**
-	 * Check the SD card 
+	 * Check the SD card
+	 * 
 	 * @return
 	 */
-	public static boolean checkSDCardAvailable(){
-		return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+	public static boolean checkSDCardAvailable() {
+		return android.os.Environment.getExternalStorageState().equals(
+				android.os.Environment.MEDIA_MOUNTED);
 	}
-	
+
 	/**
 	 * Get image from SD card by path and the name of image
+	 * 
 	 * @param fileName
 	 * @return
 	 */
-	public static boolean findPhotoFromSDCard(String path,String photoName){
+	public static boolean findPhotoFromSDCard(String path, String photoName) {
 		boolean flag = false;
-		
+
 		if (checkSDCardAvailable()) {
-			File dir = new File(FileManager.getInstance().getSdDir(),path);
+			File dir = new File(FileManager.getInstance().getSdDir(), path);
 			if (dir.exists()) {
 				File folders = new File(path);
 				File photoFile[] = folders.listFiles();
@@ -304,42 +310,45 @@ public final class ImageTools {
 						flag = true;
 					}
 				}
-			}else {
+			} else {
 				flag = false;
 			}
-//			File file = new File(path + "/" + photoName  + ".jpg" );
-//			if (file.exists()) {
-//				flag = true;
-//			}else {
-//				flag = false;
-//			}
-			
-		}else {
+			// File file = new File(path + "/" + photoName + ".jpg" );
+			// if (file.exists()) {
+			// flag = true;
+			// }else {
+			// flag = false;
+			// }
+
+		} else {
 			flag = false;
 		}
 		return flag;
 	}
-	
+
 	/**
-	 * Save image to the SD card 
+	 * Save image to the SD card
+	 * 
 	 * @param photoBitmap
 	 * @param photoName
 	 * @param path
 	 */
-	public static void savePhotoToSDCard(Bitmap photoBitmap,String path,String photoName,String suffix){
+	public static void savePhotoToSDCard(Bitmap photoBitmap, String path,
+			String photoName, String suffix) {
 		if (checkSDCardAvailable()) {
 			File dir = new File(path);
-			if (!dir.exists()){
+			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			
-			File photoFile = new File(path , photoName + suffix);
+
+			File photoFile = new File(path, photoName + suffix);
 			FileOutputStream fileOutputStream = null;
 			try {
-				
+
 				fileOutputStream = new FileOutputStream(photoFile);
 				if (photoBitmap != null) {
-					if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)) {
+					if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100,
+							fileOutputStream)) {
 						fileOutputStream.flush();
 					}
 				}
@@ -351,24 +360,52 @@ public final class ImageTools {
 				photoFile.delete();
 				e.printStackTrace();
 			}
-		} 
+		}
 	}
-	
-	public static void saveInstreamToSDCard(InputStream inputStream,String path,String photoName,String suffix){
-		if(checkSDCardAvailable()){
+
+	public static void savePhotoToAppPrivateSD(Bitmap photoBitmap, File PicDir,
+			String photoName, String suffix) {
+		if (!checkSDCardAvailable()) {
+			return;
+		}
+		File photoFile = new File(PicDir.getAbsolutePath(),photoName + suffix);
+		FileOutputStream fileOut = null;
+		try {
+
+			fileOut = new FileOutputStream(photoFile);
+			if (photoBitmap != null) {
+				if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100,
+						fileOut)) {
+					fileOut.flush();
+				}
+			}
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			photoFile.delete();
+			e.printStackTrace();
+		} catch (IOException e) {
+			photoFile.delete();
+			e.printStackTrace();
+		}
+	}
+
+	public static void saveInstreamToSDCard(InputStream inputStream,
+			String path, String photoName, String suffix) {
+		if (checkSDCardAvailable()) {
 			File dir = new File(path);
-			if (!dir.exists()){
+			if (!dir.exists()) {
 				dir.mkdirs();
 			}
 			try {
-				FileOutputStream fos = new FileOutputStream(new File(path,photoName+suffix));
+				FileOutputStream fos = new FileOutputStream(new File(path,
+						photoName + suffix));
 				byte[] buffer = new byte[1024];
 				int flag = 0;
-				while((flag = inputStream.read(buffer)) > 0){
+				while ((flag = inputStream.read(buffer)) > 0) {
 					fos.write(buffer);
 				}
 				fos.close();
-				/*inputStream.close();*/
+				/* inputStream.close(); */
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -378,14 +415,15 @@ public final class ImageTools {
 			}
 		}
 	}
-	
+
 	/**
 	 * Delete the image from SD card
+	 * 
 	 * @param context
 	 * @param path
-	 * file:///sdcard/temp.jpg
+	 *            file:///sdcard/temp.jpg
 	 */
-	public static void deleteAllPhoto(String path){
+	public static void deleteAllPhoto(String path) {
 		if (checkSDCardAvailable()) {
 			File folder = new File(path);
 			File[] files = folder.listFiles();
@@ -394,8 +432,8 @@ public final class ImageTools {
 			}
 		}
 	}
-	
-	public static void deletePhotoAtPathAndName(String path,String fileName){
+
+	public static void deletePhotoAtPathAndName(String path, String fileName) {
 		if (checkSDCardAvailable()) {
 			File folder = new File(path);
 			File[] files = folder.listFiles();
@@ -407,147 +445,176 @@ public final class ImageTools {
 			}
 		}
 	}
-	
-	public static Bitmap compressByQuality(Bitmap bitmap, int maxSize) {  
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-        int quality = 100;  
-        bitmap.compress(CompressFormat.JPEG, quality, baos);  
-        System.out.println("图片压缩前大小：" + baos.toByteArray().length + "byte");  
-        while (baos.toByteArray().length / 1024 > maxSize&&quality>0) {  
-            quality -= 10;  
-            baos.reset();  
-            bitmap.compress(CompressFormat.JPEG, quality, baos);  
-            System.out.println("质量压缩到原来的" + quality + "%时大小为："  
-                    + baos.toByteArray().length + "byte");  
-        }  
-        System.out.println("图片压缩后大小：" + baos.toByteArray().length + "byte");  
-        bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0,  
-                baos.toByteArray().length);  
-        return bitmap;  
-    }  
-	
-	public static Bitmap compressBySize(Bitmap bitmap, int targetWidth,  
-            int targetHeight) {  
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-        bitmap.compress(CompressFormat.JPEG, 100, baos);  
-        BitmapFactory.Options opts = new BitmapFactory.Options();  
-        opts.inJustDecodeBounds = true;  
-        bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0,  
-                baos.toByteArray().length, opts);  
-        // 得到图片的宽度、高度；  
-        int imgWidth = opts.outWidth;  
-        int imgHeight = opts.outHeight;
-        opts.inSampleSize = 1;
-        // 分别计算图片宽度、高度与目标宽度、高度的比例；取大于该比例的最小整数；  
-        int widthRatio = (int) Math.ceil(imgWidth / (float) targetWidth);  
-        int heightRatio = (int) Math.ceil(imgHeight / (float) targetHeight);  
-        if (widthRatio > 1 || heightRatio > 1) {  
-        	if (widthRatio > 1 || heightRatio > 1) {  
-            	opts.inSampleSize = widthRatio < heightRatio  ? widthRatio:heightRatio;
-            } 
-        }  
-        // 设置好缩放比例后，加载图片进内存；  
-        opts.inJustDecodeBounds = false;  
-        bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0,  
-                baos.toByteArray().length, opts);  
-        return bitmap;  
-    }
-	
-	/** 
-     * 通过压缩图片的尺寸来压缩图片大小，通过读入流的方式，可以有效防止网络图片数据流形成位图对象时内存过大的问题； 
-     *  
-     * @param InputStream 
-     *            要压缩图片，以流的形式传入 
-     * @param targetWidth 
-     *            缩放的目标宽度 
-     * @param targetHeight 
-     *            缩放的目标高度 
-     * @return 缩放后的图片 
-     * @throws IOException 
-     *             读输入流的时候发生异常 
-     */  
-    public  static Bitmap compressBySize(InputStream is, int targetWidth,  
-            int targetHeight) throws IOException {  
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-        byte[] buff = new byte[1024];
-        int len = 0;  
-        while ((len = is.read(buff)) != -1) {  
-            baos.write(buff, 0, len);  
-        }  
-  
-        byte[] data = baos.toByteArray();  
-        BitmapFactory.Options opts = new BitmapFactory.Options();  
-        opts.inJustDecodeBounds = true;  
-        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opts);  
-        // 得到图片的宽度、高度；  
-        int imgWidth = opts.outWidth;  
-        int imgHeight = opts.outHeight;  
-        opts.inSampleSize = 1;
-        // 分别计算图片宽度、高度与目标宽度、高度的比例；取大于该比例的最小整数；  
-        int widthRatio = (int) Math.ceil(imgWidth / (float) targetWidth);  
-        int heightRatio = (int) Math.ceil(imgHeight / (float) targetHeight);  
-        if (widthRatio > 1 || heightRatio > 1) {  
-        	opts.inSampleSize = widthRatio < heightRatio  ? widthRatio:heightRatio;
-        }  
-        // 设置好缩放比例后，加载图片进内存；  
-        opts.inJustDecodeBounds = false;  
-        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opts);  
-        return bitmap;  
-    }
-    
-    /**
-     * 获取图片缩略图
-     * @param imagePath
-     * @param width
-     * @param height
-     * @return
-     */
-    public static Bitmap getImageThumbnail(String imagePath,int width,int height){
-    	Bitmap bitmap = null;
-    	BitmapFactory.Options options = new BitmapFactory.Options();
-    	options.inJustDecodeBounds = true;
-    	//获取图片的宽和高
-    	bitmap = BitmapFactory.decodeFile(imagePath, options);
-    	options.inJustDecodeBounds = false;
-    	//计算缩放比
-    	int h = options.outHeight;
-    	int w = options.outWidth;
-    	int beWidth = w / width;
-    	int beHeight = h /height;
-    	int be = 1;
-    	if(beWidth < beHeight){
-    		be = beWidth;
-    	}else{
-    		be = beHeight;
-    	}
-    	if(be <= 0){
-    		be = 1;
-    	}
-    	options.inSampleSize = be;
-    	//重新读入图片，读取缩放后的bitmap
-    	bitmap = BitmapFactory.decodeFile(imagePath, options);
-    	//利用ThumbnailUtils来创建缩略图，这里要制定要缩放哪个Bitmap对象
-    	bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-    	return bitmap;
-    }
-    
-    /**Video的缩略图
-     * @param videoPath
-     * @param width
-     * @param height
-     * @param kind
-     * @return
-     */
-    private Bitmap getVideoThumbnail(String videoPath, int width, int height,
-    		int kind) {
-    		Bitmap bitmap = null;
-    		// 获取视频的缩略图
-    		bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
-    		System.out.println("w"+bitmap.getWidth());
-    		System.out.println("h"+bitmap.getHeight());
-    		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
-    		ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-    		return bitmap;
-    		}
-    
+
+	public static Bitmap compressByQuality(Bitmap bitmap, int maxSize) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int quality = 100;
+		bitmap.compress(CompressFormat.JPEG, quality, baos);
+		System.out.println("图片压缩前大小：" + baos.toByteArray().length + "byte");
+		while (baos.toByteArray().length / 1024 > maxSize && quality > 0) {
+			quality -= 10;
+			baos.reset();
+			bitmap.compress(CompressFormat.JPEG, quality, baos);
+			System.out.println("质量压缩到原来的" + quality + "%时大小为："
+					+ baos.toByteArray().length + "byte");
+		}
+		System.out.println("图片压缩后大小：" + baos.toByteArray().length + "byte");
+		bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0,
+				baos.toByteArray().length);
+		return bitmap;
+	}
+
+	public static Bitmap compressBySize(Bitmap bitmap, int targetWidth,
+			int targetHeight) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 100, baos);
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inJustDecodeBounds = true;
+		bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0,
+				baos.toByteArray().length, opts);
+		// 得到图片的宽度、高度；
+		int imgWidth = opts.outWidth;
+		int imgHeight = opts.outHeight;
+		opts.inSampleSize = 1;
+
+		// 分别计算图片宽度和高度的一半，与目标相比，采取2的次幂形式进行压缩
+		if (imgWidth > targetWidth || imgHeight > targetHeight) {
+			final int halfHeight = imgHeight / 2;
+			final int halfWidth = imgWidth / 2;
+
+			while ((halfHeight / opts.inSampleSize) > targetHeight
+					&& (halfWidth / opts.inSampleSize) > targetHeight) {
+				opts.inSampleSize *= 2;
+			}
+		}
+
+		/*
+		 * // 分别计算图片宽度、高度与目标宽度、高度的比例；取大于该比例的最小整数； int widthRatio = (int)
+		 * Math.ceil(imgWidth / (float) targetWidth); int heightRatio = (int)
+		 * Math.ceil(imgHeight / (float) targetHeight); if (widthRatio > 1 ||
+		 * heightRatio > 1) { if (widthRatio > 1 || heightRatio > 1) {
+		 * opts.inSampleSize = widthRatio < heightRatio ? widthRatio :
+		 * heightRatio; } }
+		 */
+		// 设置好缩放比例后，加载图片进内存；
+		opts.inJustDecodeBounds = false;
+		bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0,
+				baos.toByteArray().length, opts);
+		return bitmap;
+	}
+
+	/**
+	 * 通过压缩图片的尺寸来压缩图片大小，通过读入流的方式，可以有效防止网络图片数据流形成位图对象时内存过大的问题；
+	 * 
+	 * @param InputStream
+	 *            要压缩图片，以流的形式传入
+	 * @param targetWidth
+	 *            缩放的目标宽度
+	 * @param targetHeight
+	 *            缩放的目标高度
+	 * @return 缩放后的图片
+	 * @throws IOException
+	 *             读输入流的时候发生异常
+	 */
+	public static Bitmap compressBySize(InputStream is, int targetWidth,
+			int targetHeight) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		byte[] buff = new byte[1024];
+		int len = 0;
+		while ((len = is.read(buff)) != -1) {
+			baos.write(buff, 0, len);
+		}
+
+		byte[] data = baos.toByteArray();
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inJustDecodeBounds = true;
+		Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length,
+				opts);
+		// 得到图片的宽度、高度；
+		int imgWidth = opts.outWidth;
+		int imgHeight = opts.outHeight;
+		opts.inSampleSize = 1;
+		// 分别计算图片宽度和高度的一半，与目标相比，采取2的次幂形式进行压缩
+		if (imgWidth > targetWidth || imgHeight > targetHeight) {
+			final int halfHeight = imgHeight / 2;
+			final int halfWidth = imgWidth / 2;
+
+			while ((halfHeight / opts.inSampleSize) > targetHeight
+					&& (halfWidth / opts.inSampleSize) > targetHeight) {
+				opts.inSampleSize *= 2;
+			}
+		}
+		/*
+		 * // 分别计算图片宽度、高度与目标宽度、高度的比例；取大于该比例的最小整数； int widthRatio = (int)
+		 * Math.ceil(imgWidth / (float) targetWidth); int heightRatio = (int)
+		 * Math.ceil(imgHeight / (float) targetHeight); if (widthRatio > 1 ||
+		 * heightRatio > 1) { opts.inSampleSize = widthRatio < heightRatio ?
+		 * widthRatio : heightRatio; }
+		 */
+		// 设置好缩放比例后，加载图片进内存；
+		opts.inJustDecodeBounds = false;
+		bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opts);
+		return bitmap;
+	}
+
+	/**
+	 * 获取图片缩略图
+	 * 
+	 * @param imagePath
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public static Bitmap getImageThumbnail(String imagePath, int width,
+			int height) {
+		Bitmap bitmap = null;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		// 获取图片的宽和高
+		bitmap = BitmapFactory.decodeFile(imagePath, options);
+		options.inJustDecodeBounds = false;
+		// 计算缩放比
+		int h = options.outHeight;
+		int w = options.outWidth;
+		int beWidth = w / width;
+		int beHeight = h / height;
+		int be = 1;
+		if (beWidth < beHeight) {
+			be = beWidth;
+		} else {
+			be = beHeight;
+		}
+		if (be <= 0) {
+			be = 1;
+		}
+		options.inSampleSize = be;
+		// 重新读入图片，读取缩放后的bitmap
+		bitmap = BitmapFactory.decodeFile(imagePath, options);
+		// 利用ThumbnailUtils来创建缩略图，这里要制定要缩放哪个Bitmap对象
+		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
+				ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+		return bitmap;
+	}
+
+	/**
+	 * Video的缩略图
+	 * 
+	 * @param videoPath
+	 * @param width
+	 * @param height
+	 * @param kind
+	 * @return
+	 */
+	private Bitmap getVideoThumbnail(String videoPath, int width, int height,
+			int kind) {
+		Bitmap bitmap = null;
+		// 获取视频的缩略图
+		bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
+		System.out.println("w" + bitmap.getWidth());
+		System.out.println("h" + bitmap.getHeight());
+		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
+				ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+		return bitmap;
+	}
+
 }

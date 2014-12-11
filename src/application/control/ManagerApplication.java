@@ -48,7 +48,8 @@ public class ManagerApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		Bmob.initialize(this, Conf.BMOB_APP_ID);
-		/*this.databaseHelper = new DatabaseHelper(this.getApplicationContext(), "miyou.db", null, 1);
+		/*数据库创建
+		 * this.databaseHelper = new DatabaseHelper(this.getApplicationContext(), "miyou.db", null, 1);
 		*/
 		//创建缓存目录，系统一运行就得创建缓存目录
 		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
@@ -57,7 +58,9 @@ public class ManagerApplication extends Application {
 				cache.mkdirs();
 			}
 		}
-		
+		//设置appliactioncontext到fileManager里面
+		FileManager mFileManager = FileManager.getInstance();
+		mFileManager.setContext(getApplicationContext());
 	}
 
 	/* (non-Javadoc)

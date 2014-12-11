@@ -25,5 +25,18 @@
     <string name="gallary">相册</string>
     <string name="ResourceModel">素材模板</string>
     <string name="title_activity_show_image">图片浏览</string>
+    <string name="mitness">模糊</string>
+    <string name="brightness">亮度</string>
+    <string name="returntext">返回</string>
+    <string name="adjust_effect">调整效果</string>
+    <string name="emotion">表情</string>
+    <string name="create_tiezi_hint">写下今天的秘话……</string>
+    <string name="anonymous">匿名</string>
+    <string name="time">时间</string>
+    <string name="favor">赞</string>
+    <string name="contact">聊天</string>
+    <string name="comment">评论</string>
+    <string name="update_headview_tips">下来刷新</string>
+    <string name="update_headview_time">最近更新于</string>
 
 </resources>

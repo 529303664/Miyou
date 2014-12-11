@@ -16,6 +16,15 @@
         android:clickable="true"
         />
 
+    <TextView
+        android:id="@+id/create_tiezi_emotions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/create_tiezi_controlbar_right_button"
+        android:clickable="true"
+        android:text="@string/emotion" />
+    
     <ImageView
         android:id="@+id/create_tiezi_controlbar_right_button"
         android:layout_width="wrap_content"

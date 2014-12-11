@@ -33,7 +33,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SpinnerAdapter;
@@ -46,7 +53,10 @@ public class MainActivity extends ActionBarActivity {
 	private Fragment mShowFragment;
 	private RadioGroup dockbuttons;
 	private ActionBar actionBarSpinner;
-	private NotificationIcon mNotificationIcon;
+	private NotificationIcon mNotificationIcon;//提示小红泡
+	private ImageView refreshView;
+	private Animation roteAnim;
+	private MenuItem refreshItem;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +76,29 @@ public class MainActivity extends ActionBarActivity {
 
 	private void initView() {
 		dockbuttons = (RadioGroup) this.findViewById(R.id.dockbuttons_group);
+		refreshView = (ImageView)getLayoutInflater().inflate(R.layout.action_view, null);
+		roteAnim = AnimationUtils.loadAnimation(this, R.anim.rote_center);
+		LinearInterpolator lin = new LinearInterpolator();
+		roteAnim.setInterpolator(lin);
+	}
+	
+	private void PlayRsAnim(MenuItem item){
+		StopRsAnim();
+		refreshItem  = item;
+		
+		refreshView.setImageResource(R.drawable.ic_action_refresh);
+		refreshItem.setActionView(refreshView);
+		refreshView.startAnimation(roteAnim);
+	}
+	
+	private void StopRsAnim(){
+		if(refreshItem != null){
+			View view = refreshItem.getActionView();
+			if(view != null){
+				view.clearAnimation();
+				refreshItem.setActionView(null);
+			}
+		}
 	}
 	
 	private void initSpinner(){
@@ -73,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
 		actionBarSpinner.setNavigationMode(actionBarSpinner.NAVIGATION_MODE_LIST);
 		actionBarSpinner.setDisplayShowTitleEnabled(false);
 		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_list_array, android.R.layout.simple_spinner_dropdown_item);
+		
 		actionBarSpinner.setListNavigationCallbacks(mSpinnerAdapter, new OnNavigationListener() {
 			
 			@Override
@@ -150,6 +184,7 @@ public class MainActivity extends ActionBarActivity {
 			break;
 		case R.id.actions_menu_refresh:
 			ShowToast.showShortToast(this, "刷新");
+			PlayRsAnim(item);
 			break;
 		case R.id.actions_menu_search:
 			ShowToast.showShortToast(this, "搜贴");

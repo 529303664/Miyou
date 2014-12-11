@@ -1,15 +1,11 @@
 package miyou.fragment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
+import utilclass.FragmentTools;
 import utilclass.ImageManager;
 
 import com.luluandroid.miyou.R;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,8 +19,7 @@ public class FragmentCreatetieziNavigation extends Fragment {
 
 	private Context context;
 	private static FragmentCreatetieziNavigation mFragmentCreatetieziNavigation = null;
-	private TextView takePhoto, gallary, resourceModel;
-
+	private TextView takePhoto, gallary, resourceModel,adjustEffect;
 	private FragmentCreatetieziNavigation(Context context) {
 		this.context = context;
 	}
@@ -65,6 +60,9 @@ public class FragmentCreatetieziNavigation extends Fragment {
 				R.id.create_tiezi_gallary);
 		resourceModel = (TextView) getActivity().findViewById(
 				R.id.create_tiezi_model);
+		adjustEffect = (TextView) getActivity().findViewById(
+				R.id.create_tiezi_ps);
+		resourceModel = (TextView)getActivity().findViewById(R.id.create_tiezi_model);
 		takePhoto.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -79,6 +77,25 @@ public class FragmentCreatetieziNavigation extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				ImageManager.pictureCrop(getActivity(), Conf.CHOOSE_PICTURE);
+			}
+		});
+		adjustEffect.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getFragmentManager().beginTransaction().replace(R.id.
+				 create_tiezi_container,
+				 FragmentCreatetieziChangeBar.getInstance
+				 (getActivity())).commit();
+				}
+		});
+		resourceModel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getFragmentManager().beginTransaction().replace(R.id.create_tiezi_container,FragmentImageMould.getInstance(getActivity())).commit();
 			}
 		});
 	}
