@@ -1,21 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-	android:orientation="vertical" 
-    >
-    <FrameLayout 
-    android:id="@+id/container"
+    xmlns:arc="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1.0"
-    tools:context="miyou.MainActivity"
-    tools:ignore="MergeRootFrame"
-     />
-    <include
+    android:layout_height="match_parent"
+    >
+    
+    
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        tools:context="miyou.MainActivity"
+        tools:ignore="MergeRootFrame" />
+
+    <com.capricorn.RayMenu
+            android:id="@+id/arc_dock_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:alpha="0.5"
+            />
+
+
+    <!--
+         <include
     layout="@layout/dockbarbuttons_layout"
     android:focusable="true"
     />
-</LinearLayout>
+    -->
 
-
+</FrameLayout>

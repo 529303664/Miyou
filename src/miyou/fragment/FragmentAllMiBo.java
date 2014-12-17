@@ -38,6 +38,10 @@ public class FragmentAllMiBo extends Fragment {
 	
 	private void initView(){
 		mListView = (ListView)getActivity().findViewById(R.id.fragment_mibo_listview);
+		initAdpter();
+	}
+	
+	private void initAdpter(){
 		miBoAdapter = new MiBoAdapter(getActivity(), getItems());
 		mListView.setAdapter(miBoAdapter);
 	}

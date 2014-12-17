@@ -15,4 +15,15 @@
         android:textSize="20sp"
          />
     
+    <ListView 
+        android:id="@+id/fragment_friend_mibo_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:scrollbarStyle="outsideOverlay"
+        ></ListView>
+    
 </LinearLayout>

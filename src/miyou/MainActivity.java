@@ -14,6 +14,8 @@ import statics.BroadcastString;
 import statics.ChannelCodes;
 import utilclass.NotificationIcon;
 
+import com.capricorn.ArcMenu;
+import com.capricorn.RayMenu;
 import com.luluandroid.miyou.R;
 
 import android.support.v7.app.ActionBar.OnNavigationListener;
@@ -30,15 +32,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -57,6 +65,14 @@ public class MainActivity extends ActionBarActivity {
 	private ImageView refreshView;
 	private Animation roteAnim;
 	private MenuItem refreshItem;
+	
+	//底部提示栏
+	private RayMenu arcDockButtons;
+	
+	private float currentX;
+	private float currentY;
+	
+	private final int[] ITEM_DockButtons= {R.drawable.ic_action_edit,R.drawable.ic_action_email,R.drawable.ic_action_search};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,36 +85,88 @@ public class MainActivity extends ActionBarActivity {
 		initBroadcastReceiver();
 		IsLogin();
 		initView();
-		initRadioGroup();
+		//initRadioGroup();
 		initSpinner();
 		ManagerApplication.getInstance().addActivity(this);
 	}
 
 	private void initView() {
-		dockbuttons = (RadioGroup) this.findViewById(R.id.dockbuttons_group);
+		//dockbuttons = (RadioGroup) this.findViewById(R.id.dockbuttons_group);
 		refreshView = (ImageView)getLayoutInflater().inflate(R.layout.action_view, null);
-		roteAnim = AnimationUtils.loadAnimation(this, R.anim.rote_center);
-		LinearInterpolator lin = new LinearInterpolator();
-		roteAnim.setInterpolator(lin);
+		initArcDockButtons();
+		loadAnim();//加载动画
 	}
 	
-	private void PlayRsAnim(MenuItem item){
-		StopRsAnim();
-		refreshItem  = item;
-		
-		refreshView.setImageResource(R.drawable.ic_action_refresh);
-		refreshItem.setActionView(refreshView);
-		refreshView.startAnimation(roteAnim);
-	}
-	
-	private void StopRsAnim(){
-		if(refreshItem != null){
-			View view = refreshItem.getActionView();
-			if(view != null){
-				view.clearAnimation();
-				refreshItem.setActionView(null);
+	private void initArcDockButtons(){
+		 arcDockButtons = (RayMenu)findViewById(R.id.arc_dock_buttons);
+		 initRayMenu(arcDockButtons,ITEM_DockButtons);
+		 arcDockButtons.setGravity(Gravity.BOTTOM);
+		 arcDockButtons.setOnTouchListener(new OnTouchListener() {
+			private float downY;
+
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+				 currentY=event.getY();
+				// TODO Auto-generated method stub
+//				switch(event.getAction() & MotionEvent.ACTION_MASK){
+				 switch(event.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					downY = event.getY();
+					break;
+				case MotionEvent.ACTION_UP:
+					break;
+				case MotionEvent.ACTION_MOVE:
+					FrameLayout.LayoutParams FLP = (FrameLayout.LayoutParams)arcDockButtons.getLayoutParams();
+					FLP.topMargin += currentY - downY;
+					arcDockButtons.setLayoutParams(FLP);
+					arcDockButtons.invalidate();
+					break;
+				default:
+					break;
+				}
+				return true;
 			}
-		}
+		});
+		
+	}
+	
+	private void initRayMenu(RayMenu menu,int[] itemDrawables){
+		//发帖按钮
+		ImageView itemCreateTiezi = new ImageView(this);
+		itemCreateTiezi.setImageResource(itemDrawables[0]);
+		menu.addItem(itemCreateTiezi, new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				IntentToCreateTizi();
+			}
+		});
+		
+		//消息
+		ImageView itemMessage = new ImageView(this);
+		itemMessage.setImageResource(itemDrawables[1]);
+		menu.addItem(itemMessage, new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ShowToast.showShortToast(MainActivity.this, "消息");
+			}
+		});
+		
+		//搜索
+				ImageView itemSearch = new ImageView(this);
+				itemSearch.setImageResource(itemDrawables[2]);
+				menu.addItem(itemSearch, new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						ShowToast.showShortToast(MainActivity.this, "搜索");
+					}
+				});
+		
 	}
 	
 	private void initSpinner(){
@@ -146,6 +214,42 @@ public class MainActivity extends ActionBarActivity {
 		lbm.registerReceiver(mFragmentChangeReceiver, filter2);
 	}
 
+	private void loadAnim(){
+		roteAnim = AnimationUtils.loadAnimation(this, R.anim.rote_center);
+		LinearInterpolator lin = new LinearInterpolator();
+		roteAnim.setInterpolator(lin);
+	}
+	
+	/**
+	 *为MenuItem播放旋转动画
+	 * @param item
+	 */
+	private void PlayRsAnim(MenuItem item){
+		StopRsAnim(item);
+		refreshItem  = item;
+		
+		refreshView.setImageResource(R.drawable.ic_action_refresh);
+		refreshItem.setActionView(refreshView);
+		refreshView.startAnimation(roteAnim);
+	}
+	
+
+	/**
+	 * 停止MenuItem旋转动画
+	 * @param refreshItem
+	 */
+	private void StopRsAnim(MenuItem refreshItem){
+		if(refreshItem != null){
+			ShowToast.showLongToast(this, "停止播放刷新动画");
+			View view = refreshItem.getActionView();
+//			refreshItem.setActionView(null);
+			if(view != null){
+				view.clearAnimation();
+				refreshItem.setActionView(null);
+			}
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -167,6 +271,11 @@ public class MainActivity extends ActionBarActivity {
 		super.onDestroy();
 	}
 
+	private void IntentToCreateTizi(){
+		Intent intent = new Intent(MainActivity.this,CreateTieziActivity.class);
+		startActivityForResult(intent, ChannelCodes.CREATE_TIEZI);
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -188,6 +297,8 @@ public class MainActivity extends ActionBarActivity {
 			break;
 		case R.id.actions_menu_search:
 			ShowToast.showShortToast(this, "搜贴");
+			//测试刷新动画，停止 
+			StopRsAnim(refreshItem);
 			break;
 			default:
 				break;
