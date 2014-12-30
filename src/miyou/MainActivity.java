@@ -100,7 +100,6 @@ public class MainActivity extends ActionBarActivity {
 	private void initArcDockButtons(){
 		 arcDockButtons = (RayMenu)findViewById(R.id.arc_dock_buttons);
 		 initRayMenu(arcDockButtons,ITEM_DockButtons);
-		 arcDockButtons.setGravity(Gravity.BOTTOM);
 		 arcDockButtons.setOnTouchListener(new OnTouchListener() {
 			private float downY;
 
@@ -109,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
 				 currentY=event.getY();
 				// TODO Auto-generated method stub
 //				switch(event.getAction() & MotionEvent.ACTION_MASK){
-				 switch(event.getAction()){
+				 switch(event.getAction() & MotionEvent.ACTION_MASK){
 				case MotionEvent.ACTION_DOWN:
 					downY = event.getY();
 					break;
