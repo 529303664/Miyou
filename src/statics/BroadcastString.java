@@ -12,4 +12,6 @@ public static final String ACTION_EMAIL_RESET_FAILURE = "com.luluandroid.miyou.e
 public static final String ACTION_FRAGMENT_ALLMIBO="com.luluandroid.miyou.fragment.allmibo";
 public static final String ACTION_FRAGMENT_HOTMIBO="com.luluandroid.miyou.fragment.hotmibo";
 public static final String ACTION_FRAGMENT_FRIENDMIBO="com.luluandroid.miyou.fragment.friendmibo";
+
+public static final String ACTION_FRAGMENT_ALLMIBO_LISTVIEW_TOP = "com.luluandroid.miyou.fragment.allmibo.listview.top";
 }

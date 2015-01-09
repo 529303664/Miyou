@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -49,7 +50,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SpinnerAdapter;
 import application.control.ManagerApplication;
@@ -171,7 +174,8 @@ public class MainActivity extends ActionBarActivity {
 	private void initSpinner(){
 		actionBarSpinner = getSupportActionBar();
 		actionBarSpinner.setNavigationMode(actionBarSpinner.NAVIGATION_MODE_LIST);
-		actionBarSpinner.setDisplayShowTitleEnabled(false);
+		actionBarSpinner.setDisplayShowTitleEnabled(false);//设置actionbar标题不可显现
+		actionBarSpinner.setDisplayShowHomeEnabled(true);//设置actionbar的home图标不可显现
 		SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_list_array, android.R.layout.simple_spinner_dropdown_item);
 		
 		actionBarSpinner.setListNavigationCallbacks(mSpinnerAdapter, new OnNavigationListener() {
@@ -197,6 +201,18 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 		
+		//添加actionbar customview 方便点击actionbar相应scrollview滚到顶部
+		View customView = LayoutInflater.from(this).inflate(R.layout.activity_main_logo_customview,new LinearLayout(this), false);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+		getSupportActionBar().setCustomView(customView);
+		customView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				lbm.sendBroadcast(new Intent(BroadcastString.ACTION_FRAGMENT_ALLMIBO_LISTVIEW_TOP));
+				Toast.makeText(MainActivity.this, "点击了customview", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	public void initBroadcastReceiver() {

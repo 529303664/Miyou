@@ -3,14 +3,19 @@ package miyou.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import statics.BroadcastString;
 import miyou.adapters.MiBoAdapter;
 import miyou.mibo.Mibos;
 
 import com.luluandroid.miyou.R;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,8 @@ public class FragmentAllMiBo extends Fragment {
 	private static FragmentAllMiBo mFragmentAllMiBo=null;
 	private ListView mListView;
 	private MiBoAdapter miBoAdapter;
+	private FragmentAllMiboReceiver mFragmentAllMiboReceiver;
+	private LocalBroadcastManager lbm;
 	private FragmentAllMiBo(Context context){
 		this.context = context;
 	}
@@ -36,6 +43,21 @@ public class FragmentAllMiBo extends Fragment {
 		return view;
 	}
 	
+	
+	
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		initBroadcastReceiver();
+	}
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		if(lbm != null)
+		lbm.unregisterReceiver(mFragmentAllMiboReceiver);
+		super.onStop();
+	}
 	private void initView(){
 		mListView = (ListView)getActivity().findViewById(R.id.fragment_mibo_listview);
 		initAdpter();
@@ -46,6 +68,20 @@ public class FragmentAllMiBo extends Fragment {
 		mListView.setAdapter(miBoAdapter);
 	}
 	
+	private void initBroadcastReceiver(){
+		if(lbm == null)
+		lbm = LocalBroadcastManager.getInstance(getActivity());
+		mFragmentAllMiboReceiver = new FragmentAllMiboReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(BroadcastString.ACTION_FRAGMENT_ALLMIBO_LISTVIEW_TOP);
+		lbm.registerReceiver(mFragmentAllMiboReceiver, filter);
+		
+	}
+	
+	private void DetroyBroadcastReceiver(){
+		lbm.unregisterReceiver(mFragmentAllMiboReceiver);
+	}
+	
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
 	 */
@@ -54,6 +90,12 @@ public class FragmentAllMiBo extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		initView();
+	}
+	
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
 	}
 	public static FragmentAllMiBo getInstance(Context context){
 		if(mFragmentAllMiBo==null){
@@ -71,6 +113,18 @@ public class FragmentAllMiBo extends Fragment {
 			mibos.add(mibo);
 		}
 		return mibos;
+	}
+	
+	public class FragmentAllMiboReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			if(intent.getAction().equals(BroadcastString.ACTION_FRAGMENT_ALLMIBO_LISTVIEW_TOP)){
+				mListView.setSelection(0);
+			}
+		}
+		
 	}
 	
 }

@@ -37,7 +37,7 @@
         <activity
             android:name="miyou.MainActivity"
             android:label="@string/title_activity_main"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask" android:logo="@drawable/ic_launcher" android:configChanges="keyboard|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,8 +47,8 @@
         <activity
             android:name="miyou.createtiezi.CreateTieziActivity"
             android:label="@string/title_activity_create_tiezi" android:launchMode="singleTop"
-            android:parentActivityName="miyou.MainActivity"
             >
+           <!--  设置创贴的父activity 用于actionbar的home up按钮 -->
             <meta-data 
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="miyou.MainActivity"
